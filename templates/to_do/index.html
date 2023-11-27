@@ -26,7 +26,17 @@
                       </span>
                     </td>
                     <td>
-                      <button type="submit" class="btn btn-success ms-1" style="float: right">Complete</button>
+                      {% if not do.is_done %}
+                        <a href="{% url 'to_do:toggle-complete' pk=do.id %}"
+                           class="btn btn-outline-success link-to-page" style="float: right">
+                          Complete
+                        </a>
+                      {% else %}
+                        <a href="{% url 'to_do:toggle-complete' pk=do.id %}"
+                           class="btn btn-outline-secondary link-to-page" style="float: right">
+                          Undo
+                        </a>
+                      {% endif %}
                     </td>
                   </tr>
                   <tr>
@@ -46,7 +56,10 @@
                   </tr>
                   <tr>
                     <td>
-                      Tags: {{ do.tag }}
+
+                      Tags: {% for tag in do.tag.all %}
+                      {{ tag.name }},
+                    {% endfor %}
                     </td>
                   </tr>
                 </table>
