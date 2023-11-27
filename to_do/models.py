@@ -7,7 +7,7 @@ class Tag(models.Model):
 
 class Todo(models.Model):
     content = models.CharField(max_length=100)
-    datetime = models.DateTimeField(auto_now_add=True)
-    deadline = models.DateTimeField(null=True)
-    is_done = models.BooleanField()
+    created = models.DateTimeField(auto_now_add=True)
+    deadline = models.DateTimeField(null=True, default=None)
+    is_done = models.BooleanField(default=False)
     tag = models.ManyToManyField(Tag, related_name="todos")
