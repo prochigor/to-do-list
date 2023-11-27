@@ -16,13 +16,15 @@ class AdminPanelTests(TestCase):
 
     def test_todo_admin_search(self):
         response = self.client.get(
-            reverse("admin:to_do_todo_changelist"), {"q": "Test Task"}
+            reverse("admin:to_do_todo_changelist"),
+            {"q": "Test Task"}
         )
         self.assertContains(response, "Test Task")
 
     def test_tag_admin_search(self):
         response = self.client.get(
-            reverse("admin:to_do_tag_changelist"), {"q": "Test Tag"}
+            reverse("admin:to_do_tag_changelist"),
+            {"q": "Test Tag"}
         )
         self.assertContains(response, "Test Tag")
 
@@ -32,12 +34,15 @@ class AdminPanelTests(TestCase):
 
     def test_todo_create_view(self):
         response = self.client.post(
-            reverse("to_do:to-do-create"), {"content": "New Task", "tag": self.tag.id}
+            reverse("to_do:to-do-create"),
+            {"content": "New Task", "tag": self.tag.id}
         )
         self.assertEqual(response.status_code, 302)
 
     def test_todo_delete_view(self):
-        response = self.client.post(reverse("to_do:to-do-delete", args=[self.todo.id]))
+        response = self.client.post(
+            reverse("to_do:to-do-delete", args=[self.todo.id])
+        )
         self.assertEqual(response.status_code, 302)
 
     def test_tag_list_view(self):
@@ -45,15 +50,20 @@ class AdminPanelTests(TestCase):
         self.assertContains(response, "Test Tag")
 
     def test_tag_create_view(self):
-        response = self.client.post(reverse("to_do:tag-create"), {"name": "New Tag"})
+        response = self.client.post(
+            reverse("to_do:tag-create"), {"name": "New Tag"}
+        )
         self.assertEqual(response.status_code, 302)
 
     def test_tag_update_view(self):
         response = self.client.post(
-            reverse("to_do:tag-update", args=[self.tag.id]), {"name": "Updated Tag"}
+            reverse("to_do:tag-update", args=[self.tag.id]),
+            {"name": "Updated Tag"}
         )
         self.assertEqual(response.status_code, 302)
 
     def test_tag_delete_view(self):
-        response = self.client.post(reverse("to_do:tag-delete", args=[self.tag.id]))
+        response = self.client.post(
+            reverse("to_do:tag-delete", args=[self.tag.id])
+        )
         self.assertEqual(response.status_code, 302)

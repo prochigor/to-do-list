@@ -25,7 +25,9 @@ class TodoFormsTest(TestCase):
         }
         form = TodoCreateForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertIn("Deadline can't be less than now", form.errors["deadline"])
+        self.assertIn(
+            "Deadline can't be less than now", form.errors["deadline"]
+        )
 
     def test_to_do_search_form(self):
         form_data = {"content": "Test Content"}
