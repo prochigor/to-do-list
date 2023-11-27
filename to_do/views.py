@@ -9,7 +9,6 @@ from to_do.models import Tag, Todo
 class TodoListView(generic.ListView):
     model = Todo
     template_name = "to_do/index.html"
-    ordering = ["is_done", "-created"]
     paginate_by = 5
 
     def get_context_data(self, *, object_list=None, **kwargs):
