@@ -3,12 +3,12 @@
 
 {% block content %}
   <div class="fild">
-    <h1>Hi, {{ object|yesno:"update,add" }} your task</h1>
+    <h1>Hi, {{ object|yesno:"update,add" }} your tag</h1>
     <form action="" method="post" novalidate>
       {% csrf_token %}
       {{ form|crispy }}
       <input class="btn btn-primary" type="submit" value="Submit">
-      <a href="{% url 'to_do:index' %}" class="btn btn-outline-secondary">Go back</a>
+      <a href="{% url 'to_do:tag-list' %}" class="btn btn-outline-secondary">Go back</a>
     </form>
   </div>
 {% endblock %}

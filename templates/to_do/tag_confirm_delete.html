@@ -3,11 +3,11 @@
 
 {% block content %}
   <h1>Delete post</h1>
-  <p>Do you want to delete task: {{ todo.content }}?</p>
+  <p>Do you want to delete dag: {{ tag.name }}?</p>
   <form action="" method="post">
     {% csrf_token %}
     {{ form|crispy }}
     <input type="submit" value="Yes, delete" class="btn btn-outline-danger"/>
-    <a href="{% url 'task:index' %}" class="btn btn-outline-secondary">Go back</a>
+    <a href="{% url 'to_do:tag-list' %}" class="btn btn-outline-secondary">Go back</a>
   </form>
 {% endblock %}
