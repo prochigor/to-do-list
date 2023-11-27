@@ -21,3 +21,21 @@ class TodoCreateForm(forms.ModelForm):
             if data < timezone.now():
                 raise ValidationError("Deadline can't be less than now")
         return data
+
+
+class TaskSearchForm(forms.Form):
+    content = forms.CharField(
+        max_length=100,
+        required=False,
+        label="",
+        widget=forms.TextInput(attrs={"placeholder": "Search by content"}),
+    )
+
+
+class TagSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=20,
+        required=False,
+        label="",
+        widget=forms.TextInput(attrs={"placeholder": "Search by name"}),
+    )

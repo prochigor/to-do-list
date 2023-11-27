@@ -2,16 +2,28 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from to_do.forms import TodoCreateForm
+from to_do.forms import TodoCreateForm, TaskSearchForm, TagSearchForm
 from to_do.models import Tag, Todo
 
 
 class TodoListView(generic.ListView):
     model = Todo
-    queryset = Todo.objects.all()
     template_name = "to_do/index.html"
     ordering = ["is_done", "-created"]
     paginate_by = 5
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(TodoListView, self).get_context_data(**kwargs)
+        content = self.request.GET.get("content", "")
+        context["search_form"] = TaskSearchForm(initial={"content": content})
+        return context
+
+    def get_queryset(self):
+        queryset = Todo.objects.all()
+        form = TaskSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(content__icontains=form.cleaned_data["content"])
+        return queryset
 
 
 class TOdoCreateView(generic.CreateView):
@@ -34,8 +46,20 @@ class TOdoDeleteView(generic.DeleteView):
 class TagListView(generic.ListView):
     model = Tag
     paginate_by = 10
-    queryset = Tag.objects.all()
     fields = "__all__"
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(TagListView, self).get_context_data(**kwargs)
+        name = self.request.GET.get("name", "")
+        context["search_form"] = TagSearchForm(initial={"name": name})
+        return context
+
+    def get_queryset(self):
+        queryset = Tag.objects.all()
+        form = TagSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(name__icontains=form.cleaned_data["name"])
+        return queryset
 
 
 class TagCreateView(generic.CreateView):
