@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <section class="vh-1000" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-lg-9 col-xl-7">
+          <div class="card rounded-3" style="width: 120%;">
+            <div class="card-body p-4">
+
+              <h4 class="text-center my-3 pb-3">
+                To Do List
+                <a href="{% url 'to_do:to-do-create' %}" class="btn btn-outline-secondary active, add"
+                   style="margin-left: 50px">
+                  Add task
+                </a>
+              </h4>
+              <form method="get" action="" class="form-inline">
+                {{ search_form|crispy }}
+                <input class="btn btn-light" type="submit" value="🔎">
+              </form>
+
+              {% for do in todo_list %}
+                <table class="table mb-4" style="padding-bottom: 5px; padding-top: 5px; border: 1px solid grey;">
+                  <tr>
+                    <td>
+                      <strong>{{ do.content }}</strong>
+                      <span style="color: {% if do.is_done %}green{% else %}red{% endif %}">
+                        {% if do.is_done %}Done{% else %}Not done{% endif %}
+                      </span>
+                    </td>
+                    <td>
+                      {% if not do.is_done %}
+                        <a href="{% url 'to_do:toggle-complete' pk=do.id %}"
+                           class="btn btn-outline-success link-to-page" style="float: right">
+                          Complete
+                        </a>
+                      {% else %}
+                        <a href="{% url 'to_do:toggle-complete' pk=do.id %}"
+                           class="btn btn-outline-secondary link-to-page" style="float: right">
+                          Undo
+                        </a>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="{% url 'to_do:to-do-update' pk=do.id %}" class="btn btn-sm btn-outline-secondary">
+                        Update task
+                      </a>
+                      <a href="{% url 'to_do:to-do-delete' pk=do.id %}" class="btn btn-sm btn-outline-danger">
+                        Delete task
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Created: {{ do.created }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>Deadline: </strong>{{ do.deadline }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+
+                      Tags: {% for tag in do.tag.all %}
+                      {{ tag.name }},
+                    {% endfor %}
+                    </td>
+                  </tr>
+                </table>
+                {% empty %} <h3>Here isn't any task to do</h3>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
